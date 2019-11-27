@@ -28,6 +28,7 @@ library(tidytext)
 library(plotly)
 library(devtools)
 library(DT)
+library(lubridate)
 data("stop_words")
 # Allow for more data to be used in shiny.
 (shiny.maxRequestSize = 30*1024^2) 
@@ -39,8 +40,7 @@ data("stop_words")
 
 # Data used for "General Summary" page.
 
-wr_tweets <- read_rds("raw_data/word_resilience.rds")
-hr_tweets <- read_rds("raw_data/hashtag_resilience.rds")
+bydate <- read_rds("clean_data/tweets_bydate.rds")
 summary_table <- read_rds("general_summary/clean_summary_table") %>% 
     rename("Handle" = "screenName", 
            "# of Tweets in 2019" = "tweet_count", 
@@ -167,19 +167,7 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                                       
                                       br(),
                                       br(),
-                                      
-                                      p(paste("The graphic below shows the number of tweets using #resilience over a 9 day period. 
-                                              Is there any reason it might look different from the previous graph?")),
-                                  
-                                      br(),
-                                      
-                                      h3("Frequency of #resilience Tweets"),
-                                      
-                                      plotOutput("tweet_freq2"),
-                                      
-                                      br(),
-                                      br(),
-                                      
+                                     
                                       p(paste("The following compares various summary statistics for the different users,
                                           providing insight into the more general patterns of their twitter usage and
                                           the kinds of reactions their tweets receieve.")),
@@ -203,16 +191,16 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
 #### WORD ANALYSIS ####
 ####################################
                  
-                 tabPanel("Word Analysis",
+                 tabPanel("Word Cloud",
 
                           fluidPage(
 
-                              titlePanel("Word Cloud"),
+                              titlePanel("Words Associated with Resilience"),
                               
-                              p(paste("The word cloud below is derived from tweets that mention the word resilience.
+                              p(paste("The word cloud below is derived from tweets that use #resilience.
                               While the graphic  requires further sorting to get rid of irrelevant filler terms, it is 
                               alreading starting to provice a broader picture of the kinds of themes/categories that emerge 
-                              when people talk about resilience. What themes do you observe? Are they what you would expect?")),
+                              when people associate with resilience. What themes do you observe? Are they what you would expect?")),
 
                               br(),
 
@@ -407,13 +395,7 @@ server <- function(input, output) {
     
     output$tweet_freq1 <- renderPlot({
 
-        ts_plot(wr_tweets) 
-        
-    })
-    
-    output$tweet_freq2 <- renderPlot({
-        
-        ts_plot(hr_tweets) 
+        ts_plot(bydate) 
         
     })
     
@@ -438,7 +420,7 @@ server <- function(input, output) {
     # Output for word cloud.
 
     output$wordcloud2 <- renderWordcloud2({
-        wordcloud2(data=cloud, size=1.5, color='random-dark')
+        wordcloud2(data=cloud, size=0.9, color='random-dark')
     })
 
 ####################################

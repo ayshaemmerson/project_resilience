@@ -1,4 +1,4 @@
-`# Project Resilience; By Aysha Emmerson.
+# Project Resilience; By Aysha Emmerson.
 # Gov 1005 - "Data"; Fall 2019.
 
 
@@ -23,6 +23,7 @@ library(tm)
 library(reshape2)
 library(gt)
 library(RColorBrewer)
+library(lubridate)
 
 
 ####################################                 
@@ -103,12 +104,15 @@ wr_cleaned <- word_resilience %>%
   filter(is_retweet == FALSE) %>%
   select(screen_name, created_at, text, retweet_count, favorite_count) 
 
-# Store clean data in clean_data folder.
+# Store clean data in clean_data folder. All data stored using write_rds 
+# function will be imported into the app using read_rds.
+# Will be used in multiple places in app... including Word Analysis.
 
 write_rds(wr_cleaned, "clean_data/wr_cleaned.rds")
 
-# Same thing except only for the 50 most popular tweets, as measured by the number of times the tweet 
-# was favorited. Selected for values of interest; specifically, screen_name, 
+# Same cleaning procedure except only for the 50 most popular tweets, 
+# as measured by the number of times the tweet was favorited. Selected 
+# for values of interest; specifically, screen_name, 
 # time created, number of retweets, and number of favorites.
 
 top50wr <- word_resilience %>% 
@@ -119,7 +123,8 @@ top50wr <- word_resilience %>%
   head(50) %>%
   select(screen_name, created_at, text, retweet_count, favorite_count) 
 
-# Store clean data in clean_data folder.
+# Store cleaned data in clean_data folder.
+# Will be used for Explore page.
 
 write_rds(top50wr, "clean_data/top50wr.rds")
 
@@ -134,10 +139,12 @@ hashtag_resilience <- search_tweets(
   "#resilience", n = 100000, include_rts = FALSE, retryonratelimit = TRUE)
 
 # Store raw data in raw_data folder.
+# This data is not used anywhere directly in the app.
 
 write_rds(hashtag_resilience, "raw_data/hashtag_resilience.rds")
 
 # Clean the data... as done above.
+# To use for wordcloud in Word Analysis page.
 
 hr_cleaned <- hashtag_resilience %>% 
   filter(lang == "en") %>%
@@ -148,8 +155,9 @@ hr_cleaned <- hashtag_resilience %>%
 
 write_rds(hr_cleaned, "clean_data/hr_cleaned.rds")
 
-# Same thing except only for the 50 most popular tweets, as measured by the number of times the tweet 
-# was favorited. Select for values of interest; specifically, screen_name, 
+# Same cleaning procedure except only for the 50 most popular tweets, 
+# as measured by the number of times the tweet was favorited. Select for
+# values of interest; specifically, screen_name, 
 # time created, number of retweets, and number of favorites.
 
 top50hr <- hashtag_resilience %>% 
@@ -160,7 +168,8 @@ top50hr <- hashtag_resilience %>%
   head(50) %>%
   select(screen_name, created_at, text, retweet_count, favorite_count) 
 
-# Store clean data in clean_data folder.
+# Store cleaned data in clean_data folder.
+# Will be used for Explore page.
 
 write_rds(top50hr, "clean_data/top50hr.rds")
 
@@ -188,6 +197,7 @@ amr <- userTimeline("AmResilience", n = 3200, includeRts=F)
 df.amr <- twListToDF(amr) 
 
 # Combined all of these users into a single data frame and sorted for variables of interest.
+# Set retweet as false to only see tweets produced by these users.
 
 user_tweets <- bind_rows(
   df.gri %>% filter(isRetweet==F) %>%
@@ -208,8 +218,8 @@ user_tweets <- bind_rows(
   df.amr %>% filter(isRetweet==F) %>%
     select(text, screenName, created, retweetCount, favoriteCount))
 
-# Once combined and filtered, I export the data frame as an rds file. This is what the shiny app 
-# will import and use to construct its visualizations.
+# Store cleaned data in clean_data folder.
+# Will be used for Explore page.
 
 user_tweets <- write_rds(user_tweets, "clean_data/user_tweets.rds")
 
@@ -221,29 +231,29 @@ user_tweets <- write_rds(user_tweets, "clean_data/user_tweets.rds")
 
 #### FREQUENCY PLOTS ####
 
-# Plot time series of tweets where R/resilience was mentioned.
-# Store frequency plot in frequency_plots folder.
+# Created new dataframe with day/month variables to construct frequency plot of
+# the times resilience was mentioned from Nov 6 to Nov 11. The same frequency plot 
+# could also be constructed directly using the data from word_resilience; however, 
+# wr_tweets was too large to push to Git Hub but this transformed dataframe is not.
 
-wr_plot <- ts_plot(word_resilience)
-write_rds(wr_plot, "general_summary/wr_plot.rds")
+tweets_bydate <- word_resilience %>%
+  group_by(created_at) %>%
+  summarise(ntweet = n()) 
 
-# Plot time series of tweets where #resilience was mentioned.
-# Store frequency plot in frequency_plots folder.
+# Tested to see what plot would look like here.
 
-hr_plot <- ts_plot(hashtag_resilience)
-write_rds(hr_plot, "general_summary/hr_plot.rds")
+ts_plot(tweets_bydate)
 
-# Plot time series of tweets for twitter users.
-# Store frequency plot in frequency_plots folder.
-# Did not end up using in app as it did not convey interesting information.
+# Store cleaned data in clean_data folder.
+# Will be used for General Summary page.
 
-ut_plot <- ts_plot(user_tweets)
-write_rds(ut_plot, "general_summary/ut_plot.rds") 
+write_rds(tweets_bydate, "clean_data/tweets_bydate.rds")
 
 #### GENERAL STATS ON USERS ####
 
-# I also wanted to create a basic summary table of twitter metrics, including length of tweet,
+# Interested in creating a basic summary table of twitter metrics, including length of tweet,
 # number of tweets, and average number of favorites and retweets for twitter users.
+# Used the mutate function to create these new variables.
 
 summary_table <- user_tweets %>% 
   group_by(screenName) %>% 
@@ -254,14 +264,14 @@ summary_table <- user_tweets %>%
   mutate(fav_average = round(mean(favoriteCount)), digits = 0) %>% 
   mutate(rt_average = round(mean(retweetCount)), digits = 0) 
 
-# With the table created, I need to clean it a bit further, selecting for candidate handle and
-# the new variables I created above. 
+# With the table created, need to clean it a bit further, selecting for user's handle in
+# addition to the new variables created above. 
 
 clean_summary_table <- summary_table %>% 
   select(screenName, tweet_count, mean_tweet_length, fav_average, rt_average) %>% 
   distinct()
 
-# With the table clean, I similarly export it as an rds for later use within the app.
+# With the table clean, export it as an rds for later use within the app.
 
 write_rds(clean_summary_table, "general_summary/clean_summary_table")
 
@@ -275,15 +285,18 @@ write_rds(clean_summary_table, "general_summary/clean_summary_table")
 
 # Create wordcloud for tweets mentioning resilience. Word clouds are an effective way to visualize data as they
 # present information about the frequency of words in a clear, visually appealing format. The size of the word
-# in the cloud, depends on how often it is employed. I will create a wordcloud for the wr_cleaned1 data.
+# in the cloud, depends on how often it is employed. I will create a wordcloud for the cleaned data for
+# hashtag_resilience.
 
-# Word cloud for wr_cleaned.
+# Word cloud for hr_cleaned.
 
 # First, the data needs to be cleaned and text extracted as a vector.
 # Cleaning involves removing common stop words in order to produce
-# meaningful results.
+# meaningful results. Also removed the word "amp" and other gibberish words
+# thst kept reappearing as well as all urls. Removed the word resilience because it was too 
+# large that you could not see other words.
 
-text <- top50wr$text
+text <- hr_cleaned$text
 docs <- Corpus(VectorSource(text))
 
 docs <- docs %>%
@@ -292,6 +305,9 @@ docs <- docs %>%
   tm_map(stripWhitespace) 
 docs <- tm_map(docs, content_transformer(tolower))
 docs <- tm_map(docs, removeWords, stopwords("english"))
+docs <- tm_map(docs, removeWords, c("amp", "resilience", "'s", "'re"))
+removeURL <- function(x) gsub("http[[:alnum:]]*", "", x)
+docs <- tm_map(docs, content_transformer(removeURL))
 
 # Create a "document-term" matrix using the tm package.
 # This creates a dataframe containing each word in the first 
@@ -306,26 +322,15 @@ write_rds(df, "word_analysis/df.rds")
 
 # Using the wordcloud package, generate the word cloud.
 # Play around with different ways to visualize... 
+# Test out plotted wordcloud here, before constructing in shiny app.
 
-set.seed(1234) # for reproducibility 
+wr_word_cloud <- wordcloud2(data=df, size=5, color='random-dark')
 
-# plot wordcloud
-
-wordcloud(words = df$word, freq = df$freq, min.freq = 1,
-          max.words=200, random.order=FALSE, rot.per=0.35,            
-          colors=brewer.pal(8, "Dark2"))
-
-# plot wordcloud
-
-wr_word_cloud <- wordcloud2(data=df, size=1.6, color='random-dark', shape = 'pentagon')
-
-wr_word_cloud
-
-
-# save the image in png format
-png("MachineLearningCloud.png", width=12, height=8, units="in", res=300)
-wordcloud(dm$word, dm$freq, random.order=FALSE, colors=brewer.pal(8, "Dark2"))
-dev.off()
+# Alternatively, I could have used the following code to create the plot; I
+# just found the previous one more visually appealing:
+# wordcloud(words = df$word, freq = df$freq, min.freq = 1,
+          # max.words=200, random.order=FALSE, rot.per=0.35,            
+          # colors=brewer.pal(8, "Dark2"))
 
 #### SENTIMENT ANALYSIS ####
 
@@ -407,8 +412,8 @@ write_rds(wr_sentiment_nrc, "word_analysis/wr_sentiment_nrc.rds")
 #### EXPLORE TWEETS ####
 ####################################
 
-
 # Code used to create table in surver for top 50 tweets mentioning resilience.
+# Tested it out here and then constructed within the app itself.
 
 datatable(top_50 %>% filter(str_detect(text, input$keyword)) ,
           class = 'display',
