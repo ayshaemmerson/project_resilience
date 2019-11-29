@@ -305,7 +305,7 @@ docs <- docs %>%
   tm_map(stripWhitespace) 
 docs <- tm_map(docs, content_transformer(tolower))
 docs <- tm_map(docs, removeWords, stopwords("english"))
-docs <- tm_map(docs, removeWords, c("amp", "resilience", "'s", "'re"))
+docs <- tm_map(docs, removeWords, c("amp", "resilience", "'s", "'re", "smedian"))
 removeURL <- function(x) gsub("http[[:alnum:]]*", "", x)
 docs <- tm_map(docs, content_transformer(removeURL))
 

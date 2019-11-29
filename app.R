@@ -96,8 +96,8 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                              
                               br(),
                               
-                              p(paste("The word “resilience” is a buzz-word in many popular and academic spheres, and is a concept that can be both 
-                              aspirational and feared. It offers a lens for understanding the interlocking of past and present, for addressing crisis, 
+                              p(paste("The word “resilience” is a buzz-word in many popular and academic spheres. It is a concept that can be both 
+                              aspirational and feared, offering a lens for understanding the interlocking of past and present, for addressing crisis, 
                               and for living a meaningful life. It also offers a framework for understanding why certain patterns across history tend 
                               to re-emerge.")),
                               
@@ -113,9 +113,18 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                                       and opinions of different groups. By downloading tweets that were posted between November 6th and November 15th 2019, using 
                                       the Twitter API, this project is an attempt to conduct preliminary research on the concept of resilience, and the different 
                                       ways in which it is applied. It downloads three kinds of tweets: 1) tweets that mention the word “resilience”; 2) tweets that 
-                                      use #resilience; 3) tweets from six users (all non-profit organizations) with a twitter name that includes the word resilience—
-                                      these six users were selected for their diversity, each aspiring to engender resilience in a different context (social, environmental, 
-                                      economic, etc).")),
+                                      use #resilience; 3) tweets from six users (all non-profit organizations) with a twitter name that includes the word resilience.")),
+                              
+                              br(),
+                              
+                              p(paste("These six users were selected for their diversity, each aspiring to engender resilience in a different context (social, environmental,
+                                      economic, etc). The Global Resilience Institute (Resilience_NU) at Northeastern, is a univeristy-wide, interdisciplinary 
+                                      effort that collaborates with different experts devise solutions to resilience challenges. The Childhood Resilience Foundation (resiliencefnd) is 
+                                      aims to protect youth and empowering the underserved. The UNDP's Resilience Center (UNDP_GCRED) works in fragile ecosystems to promote inclusive development with
+                                      a focus on environmental resilience. The Resilience Shift (resilienceshift) is dedicated to creating more resilient infastructure. Resilience Code
+                                      tries to make more resilient bodies. The American Resilience Project's (AmResilience) goal is to foster American resilience using the power of stories.
+                                      By comparing the tweets made by these different users, we can compare different visions of resilience more directly, while highlighting how
+                                      this concept transcends across various disciplines.")),
                               
                               br(),
                               
@@ -197,10 +206,9 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
 
                               titlePanel("Words Associated with Resilience"),
                               
-                              p(paste("The word cloud below is derived from tweets that use #resilience.
-                              While the graphic  requires further sorting to get rid of irrelevant filler terms, it is 
-                              alreading starting to provice a broader picture of the kinds of themes/categories that emerge 
-                              when people associate with resilience. What themes do you observe? Are they what you would expect?")),
+                              p(paste("The word cloud below is derived from tweets that use #resilience. By showcasing which words
+                              appear the most often in tweets using #resilience, the plot provides a broader picture of the kinds of themes/categories 
+                              that people associate with resilience. What themes do you observe? Are they what you would expect?")),
 
                               br(),
 
@@ -246,10 +254,10 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                               
                               br(),
                               
-                              p(paste("The bring lexicon is  more straightforward than the nrc lexicon. It provides a list of (english) words and their associations  
+                              p(paste("The bing lexicon is  more straightforward than the nrc lexicon. It provides a list of (english) words and their associations  
                               with only two sentiments: negative or positive. Thus, the analysis assigns every word in a specific tweet to one of the two, and, 
                               based off of these results, it assigns a positive or negative sentiment to the tweet as a whole. The histogram below compares the proportions 
-                              of tweets that are positive versus negative. To what extent do these results align with teh previous graph? What can we conclude about 
+                              of tweets that are positive versus negative. To what extent do these results align with the previous graph? What can we conclude about 
                               the way in which the word 'resilience' is used and understood?")),
                                
                               br(),
@@ -358,7 +366,7 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                               
                               br(),
                               
-                              p(paste("Also, I encourage you to check out the link https://towardsdatascience.com/create-a-word-cloud-with-r-bde3e7422e8a,
+                              p(paste("Check out the link https://towardsdatascience.com/create-a-word-cloud-with-r-bde3e7422e8a,
                                       which in exceedingly helpful when learning how to create word clouds.")),
      
                               br(),
@@ -369,9 +377,9 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                               
                               br(),
                               
-                              p(paste("Finally, I would like to thank by brother Jasper, roommate Kendra, and all of my other friends who have
+                              p(paste("Finally, I would like to thank my brother Jasper, blockmates Kendra and Luke, as well as all of my other friends who have
                                       for being there during all of the ups and downs of what has been, without competition, the most time
-                                      consuming, intensive class that I have ever taken.")),
+                                      consuming, intensive class that I have ever taken - but also one of the most rewarding.")),
                               
                               br()
                               
