@@ -1,19 +1,15 @@
 # Project Resilience App; By Aysha Emmerson.
 # Gov 1005 - "Data"; Fall 2019.
 
-# Must load libraries again, depsite being loaded in the script. 
 # For shiny app.
 
 library(shiny)
 library(rsconnect)
 
-# For tweet download.
+# Must load libraries again, depsite being loaded in the script.
 
 library(rtweet)
 library(twitteR)
-
-# General transformations and visualizations.
-
 library(fs)
 library(tidyverse)
 library(ggthemes)
@@ -21,18 +17,22 @@ library(tidytext)
 library(ggpubr)
 library(stringr)
 library(textdata)
-
-# For word cloud.
-
 library(wordcloud)
 library(wordcloud2)
 library(SnowballC)
-
-# For sentiment analysis.
-
 library(tm)
 library(reshape2)
+library(gt)
 library(RColorBrewer)
+library(twitteR)
+library(ggplot2)
+library(lubridate)
+library(ggthemes)
+library(shinythemes)
+library(tidytext)
+library(plotly)
+library(devtools)
+library(DT)
 library(lubridate)
 
 # The stop words data is necessary later for sentiment analysis.
@@ -289,9 +289,9 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
 
                             h3("Tweet Search"),
 
-                            # DTable Keyword Input - input$keyword
+                            # DTable Keyword Input - input$keyword1
 
-                            textInput("keyword", "Please enter a keyword to search, e.g. strength", "strength"),
+                            textInput("keyword1", "Please enter a keyword to search, e.g. strength", "strength"),
 
                             DTOutput("word_table1")
 
@@ -315,8 +315,10 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                             was favorited.")),
 
                             h3("Tweet Search"),
+                            
+                            # DTable Keyword Input - input$keyword2
 
-                            textInput("keyword", "Please enter a keyword to search, e.g. climate", "climate"),
+                            textInput("keyword2", "Please enter a keyword to search, e.g. support", "support"),
 
                             DTOutput("word_table2"),
 
@@ -342,7 +344,9 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                             
                             h3("Tweet Search"),
                             
-                            textInput("keyword", "Please enter a keyword to search, e.g. resilience", "resilience"),
+                            # DTable Keyword Input - input$keyword3
+                            
+                            textInput("keyword3", "Please enter a keyword to search, e.g. climate", "climate"),
                             
                             DTOutput("word_table3"),
                             
@@ -485,7 +489,7 @@ server <- function(input, output) {
 
     output$word_table1 <- renderDT({
 
-        datatable(top_50wr %>% filter(str_detect(text, input$keyword)),
+        datatable(top_50wr %>% filter(str_detect(text, input$keyword1)),
                   class = 'display',
                   rownames = FALSE,
                   selection = 'single',
@@ -503,7 +507,7 @@ server <- function(input, output) {
 
     output$word_table2 <- renderDT({
 
-        datatable(top_50hr %>% filter(str_detect(text, input$keyword)),
+        datatable(top_50hr %>% filter(str_detect(text, input$keyword2)),
                   class = 'display',
                   rownames = FALSE,
                   selection = 'single',
@@ -520,7 +524,7 @@ server <- function(input, output) {
     
     output$word_table3 <- renderDT({
         
-        datatable(usr_tweets %>% filter(str_detect(text, input$keyword)),
+        datatable(usr_tweets %>% filter(str_detect(text, input$keyword3)),
                   class = 'display',
                   rownames = FALSE,
                   selection = 'single',

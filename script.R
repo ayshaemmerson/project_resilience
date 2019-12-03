@@ -423,7 +423,7 @@ write_rds(wr_sentiment_nrc, "word_analysis/wr_sentiment_nrc.rds")
 # Code used to create table in server for top 50 tweets mentioning resilience.
 # Tested it out here and then constructed within the app itself.
 
-datatable(top_50 %>% filter(str_detect(text, input$keyword)) ,
+datatable(top_50 %>% filter(str_detect(text, input$keyword1)) ,
           class = 'display',
           rownames = FALSE,
           selection = 'single',
@@ -433,7 +433,7 @@ datatable(top_50 %>% filter(str_detect(text, input$keyword)) ,
 # Code used to create table in surver for top 50 tweets with #resilience.
 # Tested it out here and then constructed within the app itself.
 
-datatable(top50hr %>% filter(str_detect(text, input$keyword)) ,
+datatable(top50hr %>% filter(str_detect(text, input$keyword2)) ,
           class = 'display',
           rownames = FALSE,
           selection = 'single',
@@ -444,7 +444,7 @@ datatable(top50hr %>% filter(str_detect(text, input$keyword)) ,
 # Code used to create table in surver for users.
 # Tested it out here and then constructed within the app itself.
 
-datatable(user_tweets %>% filter(str_detect(text, input$keyword)) ,
+datatable(user_tweets %>% filter(str_detect(text, input$keyword3)) ,
           class = 'display',
           rownames = FALSE,
           selection = 'single',
