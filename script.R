@@ -1,7 +1,6 @@
 # Project Resilience Script; By Aysha Emmerson.
 # Gov 1005 - "Data"; Fall 2019.
 
-
 ####################################                 
 # LOAD PACKAGES 
 ####################################
@@ -54,7 +53,6 @@ access_secret <- "aBOpSp46kVBuE9FKzE9dwBhDhaVn7mV9GuAmIEnqGTvB8"
 
 setup_twitter_oauth(consumer_key, consumer_secret, access_token, access_secret)
 
-
 ####################################                 
 #### ORGANIZE FOLDERS ####
 ####################################
@@ -83,11 +81,9 @@ dir.create("general_summary")
 
 dir.create("word_analysis")
 
-
 ####################################                 
 #### LOAD DATA & INITIAL CLEAN ####
 ####################################
-
 
 #### TWEETS MENTIONING RESILIENCE ####
 
@@ -242,11 +238,9 @@ user_tweets <- bind_rows(
 
 user_tweets <- write_rds(user_tweets, "clean_data/user_tweets.rds")
 
-
 ####################################                 
 #### GENERAL SUMMARY ####
 ####################################
-
 
 #### FREQUENCY PLOTS ####
 
@@ -295,11 +289,9 @@ clean_summary_table <- summary_table %>%
 
 write_rds(clean_summary_table, "general_summary/clean_summary_table")
 
-
 ####################################                 
 ##### WORD ANALYSIS ####
 ####################################
-
 
 #### WORD CLOUDS ####
 
@@ -414,7 +406,6 @@ wr_sentiment_nrc <- wr_cleaned %>%
 # Stored sentiment analysis data in sentiment_analysis folder.
 
 write_rds(wr_sentiment_nrc, "word_analysis/wr_sentiment_nrc.rds")
-
 
 ####################################                 
 #### EXPLORE TWEETS ####
