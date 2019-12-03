@@ -443,7 +443,6 @@ datatable(user_tweets %>% filter(str_detect(text, input$keyword3)) ,
           options = list(dom = 'tip')
 ) %>% formatStyle(2, cursor = 'pointer')
 
-
 ########################################                
 #### ADDITIONAL NOTES ####
 ########################################
