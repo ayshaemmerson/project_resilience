@@ -456,7 +456,7 @@ datatable(user_tweets %>% filter(str_detect(text, input$keyword3)) ,
 
 # I originally placed the "sentiment analysis" tab after the "word cloud" tab; however, found that the published  
 # version had trouble loading with this ordering, as the word cloud requires a significant amount of time to 
-# process. 
+# process, so I switched them.
 
 # In the end, I did not use as much of the user's data as I originally had planned; however, in the future,
 # I would like to create individual word cloud frequencies for each of these users, to see how they compare thematically.
