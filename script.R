@@ -290,6 +290,57 @@ clean_summary_table <- summary_table %>%
 write_rds(clean_summary_table, "general_summary/clean_summary_table")
 
 ####################################                 
+##### SENTIMENT ANALYSIS ####
+####################################
+
+# The purpose of this section is to perform a series of sentiment analysis that provides general
+# information about the tone used in tweets containing the word "resilience" 
+# in them. There are three main lexicons: bing, nrc, and AFINN. I chose to use bing and nrc as I felt
+# AFINN was slightly redundant after using the other two.
+
+# The sentiment analysis will be on the tweets with the designated key word (resilience) in their text. 
+# After locating these keywords and assigning them a relevant keyword value, the text 
+# can then be broken up to determine the relevant sentiments for all words in the text. 
+# After, we can group by each keyword value tally and total of different sentiments. 
+# The resulting sentiments are the sentiments for the word resilience, given the other words surrounding it.
+
+# First, create object for Keyword Tweets -- resilience.
+
+kw_resilience <- c("resilience")
+
+# Bing analysis. The bing output will provide information about whether these tweets express, in general, positive or negative 
+# sentiments by giving us a binary value based on the aggregate rating of each word in the text.
+
+wr_sentiment_bing <- wr_cleaned %>%
+  filter(str_detect(text, paste(kw_resilience, collapse="|"))) %>% 
+  mutate(keyword = str_match(text, paste(kw_resilience, collapse="|"))) %>% 
+  unnest_tokens(word, text) %>%
+  inner_join(get_sentiments("bing")) %>%
+  group_by(keyword, sentiment) %>%
+  tally()
+
+# Stored bing sentiment analysis data in sentiment_analysis folder.
+
+write_rds(wr_sentiment_bing, "word_analysis/wr_sentiment_bing.rds")
+
+# Nrc analysis for tweets in word_resilience.
+# Instead of just providing binary values, this nrc analyis assigns a specific tweet in addition to a binary 
+# of positive/negative. These emotions include anger, anticipation, disgust, fear, joy, sadness, surprise, and trust.
+
+wr_sentiment_nrc <- wr_cleaned %>%
+  filter(str_detect(text, paste(kw_resilience, collapse="|"))) %>% 
+  mutate(keyword = str_match(text, paste(kw_resilience, collapse="|"))) %>% 
+  unnest_tokens(word, text) %>%
+  inner_join(get_sentiments("nrc")) %>%
+  group_by(keyword, sentiment) %>%
+  tally() %>%
+  arrange(desc(n)) 
+
+# Stored sentiment analysis data in sentiment_analysis folder.
+
+write_rds(wr_sentiment_nrc, "word_analysis/wr_sentiment_nrc.rds")
+
+####################################                 
 ##### WORD ANALYSIS ####
 ####################################
 
@@ -353,59 +404,8 @@ wr_word_cloud <- wordcloud2(data=df, size=5, color='random-dark')
 # Alternatively, I could have used the following code to create the plot; I
 # just found the previous one more visually appealing:
 # wordcloud(words = df$word, freq = df$freq, min.freq = 1,
-          # max.words=200, random.order=FALSE, rot.per=0.35,            
-          # colors=brewer.pal(8, "Dark2"))
-
-####################################                 
-##### SENTIMENT ANALYSIS ####
-####################################
-
-# The purpose of this section is to perform a series of sentiment analysis that provides general
-# information about the tone used in tweets containing the word "resilience" 
-# in them. There are three main lexicons: bing, nrc, and AFINN. I chose to use bing and nrc as I felt
-# AFINN was slightly redundant after using the other two.
-
-# The sentiment analysis will be on the tweets with the designated key word (resilience) in their text. 
-# After locating these keywords and assigning them a relevant keyword value, the text 
-# can then be broken up to determine the relevant sentiments for all words in the text. 
-# After, we can group by each keyword value tally and total of different sentiments. 
-# The resulting sentiments are the sentiments for the word resilience, given the other words surrounding it.
-
-# First, create object for Keyword Tweets -- resilience.
-
-kw_resilience <- c("resilience")
-
-# Bing analysis. The bing output will provide information about whether these tweets express, in general, positive or negative 
-# sentiments by giving us a binary value based on the aggregate rating of each word in the text.
-
-wr_sentiment_bing <- wr_cleaned %>%
-  filter(str_detect(text, paste(kw_resilience, collapse="|"))) %>% 
-  mutate(keyword = str_match(text, paste(kw_resilience, collapse="|"))) %>% 
-  unnest_tokens(word, text) %>%
-  inner_join(get_sentiments("bing")) %>%
-  group_by(keyword, sentiment) %>%
-  tally()
-
-# Stored bing sentiment analysis data in sentiment_analysis folder.
-
-write_rds(wr_sentiment_bing, "word_analysis/wr_sentiment_bing.rds")
-
-# Nrc analysis for tweets in word_resilience.
-# Instead of just providing binary values, this nrc analyis assigns a specific tweet in addition to a binary 
-# of positive/negative. These emotions include anger, anticipation, disgust, fear, joy, sadness, surprise, and trust.
-
-wr_sentiment_nrc <- wr_cleaned %>%
-  filter(str_detect(text, paste(kw_resilience, collapse="|"))) %>% 
-  mutate(keyword = str_match(text, paste(kw_resilience, collapse="|"))) %>% 
-  unnest_tokens(word, text) %>%
-  inner_join(get_sentiments("nrc")) %>%
-  group_by(keyword, sentiment) %>%
-  tally() %>%
-  arrange(desc(n)) 
-
-# Stored sentiment analysis data in sentiment_analysis folder.
-
-write_rds(wr_sentiment_nrc, "word_analysis/wr_sentiment_nrc.rds")
+# max.words=200, random.order=FALSE, rot.per=0.35,            
+# colors=brewer.pal(8, "Dark2"))
 
 ####################################                 
 #### EXPLORE TWEETS ####
@@ -454,6 +454,10 @@ datatable(user_tweets %>% filter(str_detect(text, input$keyword3)) ,
 # times it is favorited. The results have not been particularly interesting and I’m not sure how 
 # statically valid they are given the small number of tweets I am working with… So I decided not to 
 # include them in the final version of my project. 
+
+# I originally placed the "sentiment analysis" tab after the "word cloud" tab; however, found that the published  
+# version had trouble loading with this ordering, as the word cloud requires a significant amount of time to 
+# process. 
 
 # In the end, I did not use as much of the user's data as I originally had planned; however, in the future,
 # I would like to create individual word cloud frequencies for each of these users, to see how they compare thematically.

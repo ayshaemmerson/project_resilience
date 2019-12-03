@@ -205,27 +205,6 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                                       
                                   ))),
                  
-####################################
-#### WORD ANALYSIS ####
-####################################
-                 
-                 tabPanel("Word Cloud",
-
-                          fluidPage(
-
-                              titlePanel("Words Associated with Resilience"),
-                              
-                              p(paste("The word cloud below is derived from tweets that use #resilience. By showcasing which words
-                              appear the most often in tweets using #resilience, the plot provides a broader picture of the kinds of themes/categories 
-                              that people associate with resilience. What themes do you observe? Are they what you would expect?")),
-
-                              br(),
-
-                              wordcloud2Output('wordcloud2'),
-
-                              br()
-
-                          )),
 
 ####################################
 #### SENTIMENT ANALYSIS ####
@@ -269,6 +248,28 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                               plotlyOutput("bing")
                               
                               )),
+
+####################################
+#### WORD ANALYSIS ####
+####################################
+
+tabPanel("Word Cloud",
+         
+         fluidPage(
+             
+             titlePanel("Words Associated with Resilience"),
+             
+             p(paste("The word cloud below is derived from tweets that use #resilience. By showcasing which words
+                              appear the most often in tweets using #resilience, the plot provides a broader picture of the kinds of themes/categories 
+                              that people associate with resilience. What themes do you observe? Are they what you would expect?")),
+             
+             br(),
+             
+             wordcloud2Output('wordcloud2'),
+             
+             br()
+             
+         )),
                  
 ####################################                 
 #### EXPLORE TWEETS ####
@@ -433,16 +434,6 @@ server <- function(input, output) {
     )
     
 ####################################
-#### WORD ANALYSIS ####
-####################################
-    
-    # Output for word cloud.
-
-    output$wordcloud2 <- renderWordcloud2({
-        wordcloud2(data=cloud, size=0.9, color='random-dark')
-    })
-
-####################################
 #### SENTIMENT ANALYSIS ####
 ####################################
     
@@ -475,6 +466,17 @@ server <- function(input, output) {
             theme(axis.title.x=element_blank(),
                   axis.text.x = element_text(angle = 60, hjust = 1))
     })
+    
+####################################
+#### WORD ANALYSIS ####
+####################################
+    
+# Output for word cloud.
+    
+output$wordcloud2 <- renderWordcloud2({
+        wordcloud2(data=cloud, size=0.9, color='random-dark')
+    })
+    
     
 ####################################                 
 #### EXPLORE TWEETS ####
