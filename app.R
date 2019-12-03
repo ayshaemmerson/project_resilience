@@ -1,10 +1,19 @@
+# Project Resilience App; By Aysha Emmerson.
+# Gov 1005 - "Data"; Fall 2019.
 
 # Must load libraries again, depsite being loaded in the script. 
+# For shiny app.
 
 library(shiny)
 library(rsconnect)
+
+# For tweet download.
+
 library(rtweet)
 library(twitteR)
+
+# General transformations and visualizations.
+
 library(fs)
 library(tidyverse)
 library(ggthemes)
@@ -12,24 +21,24 @@ library(tidytext)
 library(ggpubr)
 library(stringr)
 library(textdata)
+
+# For word cloud.
+
 library(wordcloud)
 library(wordcloud2)
 library(SnowballC)
+
+# For sentiment analysis.
+
 library(tm)
 library(reshape2)
-library(gt)
 library(RColorBrewer)
-library(twitteR)
-library(ggplot2)
 library(lubridate)
-library(ggthemes)
-library(shinythemes)
-library(tidytext)
-library(plotly)
-library(devtools)
-library(DT)
-library(lubridate)
+
+# The stop words data is necessary later for sentiment analysis.
+
 data("stop_words")
+
 # Allow for more data to be used in shiny.
 (shiny.maxRequestSize = 30*1024^2) 
 
@@ -40,7 +49,7 @@ data("stop_words")
 
 # Data used for "General Summary" page.
 
-bydate <- read_rds("clean_data/tweets_bydate.rds")
+bydate <- read_rds("general_summary/tweets_bydate.rds")
 summary_table <- read_rds("general_summary/clean_summary_table") %>% 
     rename("Handle" = "screenName", 
            "# of Tweets in 2019" = "tweet_count", 
@@ -48,11 +57,12 @@ summary_table <- read_rds("general_summary/clean_summary_table") %>%
            "Average Favorites Per Tweet" = "fav_average", 
            "Average Retweets Per Tweet" = "rt_average") 
 
-# Data used for "Word Analysis" page.
+# Data used for "Word Cloud" page.
 
 cloud <- read_rds("word_analysis/df.rds")
-wrclean <- read_rds("clean_data/wr_cleaned.rds")
-hrclean <- read_rds("clean_data/hr_cleaned.rds")
+
+# Data used for "Sentiment Analysis" page.
+
 wr_bing <- read_rds("word_analysis/wr_sentiment_bing.rds")
 wr_nrc <- read_rds("word_analysis/wr_sentiment_nrc.rds")
 
@@ -67,6 +77,7 @@ top_50hr <- read_rds("clean_data/top50hr.rds")
 ####################################
 
 # Define UI for the application, including a navigation bar at the top.
+# Set theme of the app to simplex as I liked its minimalist, aesthetic layout.
 
 ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                  
@@ -80,7 +91,7 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                           
                           fluidPage(
                               
-                              # Panel title, repeated many times.
+                              # Panel title, repeated many times throughout the app.
                               
                               titlePanel("Investigating Resilience Using Twitter"),
                             
@@ -145,14 +156,12 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
 #### GENERAL SUMMARY ####
 ####################################
 
-# Page is a general summary of interesting findings from the three sets of data.
-# Did not show the same information for each set of data.
+# Page is a general summary of interesting findings from two of the sets of data.
+# Did not show the same information for each dataset to keep my outputs diverse!
                  
                  tabPanel("General Summary",
                           
                           fluidPage(
-                              
-                              # Panel title, repeated many times.
                               
                               titlePanel("Summary Statistics"),
                               
@@ -225,8 +234,6 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                 tabPanel("Sentiment Analysis",
          
                         fluidPage(
-
-                              # Application title
                               
                               titlePanel("Sentiment Analysis"),
                               
@@ -236,9 +243,6 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                               commonly associated with resilience. This is done by checking each tweet
                               for specific 'baskets of words,' which are known as lexicons. I chose to use the 'nrc' and
                               'bing' lexicons.")),
-                              
-                              # I created visualizations for all three lexicons in the script, so I only need to
-                              # pull them from below here and stick them in between my text.
                         
                               br(),
                               
@@ -332,7 +336,7 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                              
                              br(),
                              
-                             p(paste("Explore the tweets of the six users. How do they differ in their content")),
+                             p(paste("Explore the tweets of the six users. How do they differ in their content?")),
  
                             # User tweets.
                             
@@ -354,7 +358,8 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                           
                           fluidPage(
                               
-                              # I also want to add an acknowledgements page at the end.
+                              # Acknowledgements page at the end.
+                              # Does not require connection to the server.
                               
                               titlePanel("Acknowledgments"),
                               
@@ -367,19 +372,21 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                               br(),
                               
                               p(paste("Check out the link https://towardsdatascience.com/create-a-word-cloud-with-r-bde3e7422e8a,
-                                      which in exceedingly helpful when learning how to create word clouds.")),
+                                      which in exceedingly helpful when learning how to create word clouds. Also, check out 
+                                      https://medium.com/@GalarnykMichael/accessing-data-from-twitter-api-using-r-part1-b387a1c7d3e
+                                      for coherent instructions on how to access data from twitter by making an API request.")),
      
                               br(),
                               
                               p(paste("I would like to thank Preceptor, the Gov 1005 TFs and CAs, and my fellow classmates, for all 
                                       of their support in learning R, throughout the semester. In particular, thank you to Claire Fridkin, whose
-                                      Study Halls I would structure my entire weekend around.")),
+                                      Study Halls were so great that I would structure my entire weekend around them.")),
                               
                               br(),
                               
-                              p(paste("Finally, I would like to thank my brother Jasper, blockmates Kendra and Luke, as well as all of my other friends who have
+                              p(paste("Finally, I would like to thank my brother Jasper, blockmates Kendra and Luke, as well as all of my other friends 
                                       for being there during all of the ups and downs of what has been, without competition, the most time
-                                      consuming, intensive class that I have ever taken - but also one of the most rewarding.")),
+                                      consuming, tedious, intensive class that I have ever taken - but also one of the most rewarding.")),
                               
                               br()
                               
@@ -413,7 +420,7 @@ server <- function(input, output) {
         
         summary_table,
         
-        # This are additional attributes particular to the DT package.
+        # These are additional attributes particular to the DT package.
         
         class = 'display', 
         rownames = FALSE,
@@ -470,9 +477,9 @@ server <- function(input, output) {
 ####################################
     
     # DTable of Tweets. Filters for "text" containing the input$keyword. 
-    # Selection = 'single' enables only one row (and date cell) to be selected at a time
-    # Format style ise used to change the cursor to a more click-friendly pointer over the date column
-    # list(dom = "tip") gets rid of the defualt search bar that comes with DTables
+    # Selection = 'single' enables only one row (and date cell) to be selected at a time.
+    # Format style is used to change the cursor to a more click-friendly pointer over the date column.
+    # list(dom = "tip") removes the defualt search bar that comes with DTables.
     
     # Explore top 50 "word resilience" tweets.
 
@@ -517,7 +524,7 @@ server <- function(input, output) {
                   class = 'display',
                   rownames = FALSE,
                   selection = 'single',
-                  colnames = c('User', 'Date/Time', 'Tweet text', 'Retweets', 'Favorites'),
+                  colnames = c('Tweet text', 'User', 'Date/Time', 'Retweets', 'Favorites'),
                   options = list(dom = 'tip')
         ) %>% formatStyle(2, cursor = 'pointer')
     })
