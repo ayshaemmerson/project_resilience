@@ -239,10 +239,8 @@ user_tweets <- bind_rows(
 user_tweets <- write_rds(user_tweets, "clean_data/user_tweets.rds")
 
 ####################################                 
-##### WORD ANALYSIS ####
+##### WORD CLOUD ####
 ####################################
-
-#### WORD CLOUDS ####
 
 # Create wordcloud for tweets mentioning resilience. Word clouds are an effective way to visualize data as they
 # present information about the frequency of words in a clear, visually appealing format. The size of the word
@@ -453,10 +451,6 @@ datatable(user_tweets %>% filter(str_detect(text, input$keyword3)) ,
 # times it is favorited. The results have not been particularly interesting and I’m not sure how 
 # statically valid they are given the small number of tweets I am working with… So I decided not to 
 # include them in the final version of my project. 
-
-# I originally placed the "sentiment analysis" tab after the "word cloud" tab; however, found that the published  
-# version had trouble loading with this ordering, as the word cloud requires a significant amount of time to 
-# process, so I switched them.
 
 # In the end, I did not use as much of the user's data as I originally had planned; however, in the future,
 # I would like to create individual word cloud frequencies for each of these users, to see how they compare thematically.

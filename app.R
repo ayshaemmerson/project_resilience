@@ -100,13 +100,13 @@ tabPanel("Word Cloud",
                       appear the most often in tweets using #resilience, the plot provides a broader picture of the kinds of themes/categories 
                       that people associate with resilience. What themes do you observe? Are they what you would expect?")),
                               
-                              br(),
+             br(),
                               
-                              wordcloud2Output('wordcloud2'),
+             wordcloud2Output('wordcloud2'),
                               
-                              br()
+             br()
                               
-                          )),
+             )),
                  
                                  
 ####################################
@@ -116,179 +116,179 @@ tabPanel("Word Cloud",
 # Page is a general summary of interesting findings from two of the sets of data.
 # Did not show the same information for each dataset to keep my outputs diverse!
                  
-                 tabPanel("General Summary",
-                          
-                          fluidPage(
-                              
-                              titlePanel("Summary Statistics"),
-                              
-                              br(),
+tabPanel("General Summary",
+         
+         fluidPage(
+             
+             titlePanel("Summary Statistics"),
+             
+             br(),
                                   
-                                  # The main panel will feature text and three of the visualizations for this tab.
+             # The main panel will feature text and three of the visualizations for this tab.
                                   
-                               mainPanel(
+             mainPanel(
                                   
-                                "The graphic below shows the number of tweets mentioning resilience over a 9 day period. 
-                                Why might the graph spike on November 11th?",
+             "The graphic below shows the number of tweets mentioning resilience over a 9 day period. 
+             Why might the graph spike on November 11th?",
                                       
-                                br(),
+             br(),
                                       
-                                # This function pulls the created visualization from the server below, and outputs
-                                # it in the app.
+             # This function pulls the created visualization from the server below, and outputs
+             # it in the app.
                                       
-                                 h3("Frequency of 'resilience' Tweets"),
+             h3("Frequency of 'resilience' Tweets"),
                                       
-                                 plotOutput("tweet_freq1"),
+             plotOutput("tweet_freq1"),
                                       
-                                 br(),
-                                 br(),
+             br(),
+             br(),
                                      
-                                 p(paste("The following compares various summary statistics for the different users,
-                                 providing insight into the more general patterns of their twitter usage and
-                                 the kinds of reactions their tweets receieve.")),
+             p(paste("The following compares various summary statistics for the different users,
+             providing insight into the more general patterns of their twitter usage and
+             the kinds of reactions their tweets receieve.")),
                                   
-                                 br(),
+             br(),
                                       
-                                 h3("Summary of Users' Tweets"),
+             h3("Summary of Users' Tweets"),
                                 
-                                 br(),
+             br(),
                                       
-                                 # The DT package is helps to make interactive tables.
+             # The DT package is helps to make interactive tables.
                                       
-                                 DTOutput("summary_table"),
+             DTOutput("summary_table"),
                                       
-                                 br(),
-                                 br()
+             br(),
+             br()
                                 
-                                ))),
+             ))),
                  
 
 ####################################
 #### SENTIMENT ANALYSIS ####
 ####################################
 
-                tabPanel("Sentiment Analysis",
+tabPanel("Sentiment Analysis",
          
-                        fluidPage(
-                              
-                             titlePanel("Sentiment Analysis"),
-                              
-                              br(),
-                              
-                              p(paste("Using a method called Sentiment Analysis, we can discern what sentiments are 
+         fluidPage(
+             
+             titlePanel("Sentiment Analysis"),
+             
+             br(),
+             
+             p(paste("Using a method called Sentiment Analysis, we can discern what sentiments are 
                               commonly associated with resilience. This is done by checking each tweet
                               for specific 'baskets of words,' which are known as lexicons. I chose to use the 'nrc' and
                               'bing' lexicons.")),
                         
-                              br(),
+             br(),
                               
-                              p(paste("The nrc lexicon provides a list of (english) words and their associations with eight basic emotions and 
-                              two sentiments: anger, fear, anticipation, trust, surprise, sadness, joy, as well as negative and positive. The analysis
-                              assigns every word in a specific tweet to one of these words, and, based off of these results, it assigns a word to the tweet 
-                              as a whole. The histogram below compares the proportions of tweets for each feeling/sentiment. What do you think these results
-                              indicate about the content of tweets that mention resilience?")),
+             p(paste("The nrc lexicon provides a list of (english) words and their associations with eight basic emotions and 
+             two sentiments: anger, fear, anticipation, trust, surprise, sadness, joy, as well as negative and positive. The analysis
+             assigns every word in a specific tweet to one of these words, and, based off of these results, it assigns a word to the tweet 
+             as a whole. The histogram below compares the proportions of tweets for each feeling/sentiment. What do you think these results
+             indicate about the content of tweets that mention resilience?")),
                               
-                              br(),
+             br(),
                               
-                              plotlyOutput("nrc"),
+             plotlyOutput("nrc"),
                               
-                              br(),
+             br(),
                               
-                              p(paste("The bing lexicon is  more straightforward than the nrc lexicon. It provides a list of (english) words and their associations  
-                              with only two sentiments: negative or positive. Thus, the analysis assigns every word in a specific tweet to one of the two, and, 
-                              based off of these results, it assigns a positive or negative sentiment to the tweet as a whole. The histogram below compares the proportions 
-                              of tweets that are positive versus negative. To what extent do these results align with the previous graph? What can we conclude about 
-                              the way in which the word 'resilience' is used and understood?")),
+             p(paste("The bing lexicon is  more straightforward than the nrc lexicon. It provides a list of (english) words and their associations  
+             with only two sentiments: negative or positive. Thus, the analysis assigns every word in a specific tweet to one of the two, and, 
+             based off of these results, it assigns a positive or negative sentiment to the tweet as a whole. The histogram below compares the proportions 
+             of tweets that are positive versus negative. To what extent do these results align with the previous graph? What can we conclude about 
+             the way in which the word 'resilience' is used and understood?")),
                                
-                              br(),
+             br(),
                               
-                              plotlyOutput("bing")
+             plotlyOutput("bing")
                               
-                              )),
+             )),
                  
 ####################################                 
 #### EXPLORE TWEETS ####
 ####################################
 
-                tabPanel("Explore Tweets",
-
-                        fluidPage(
-
-                            titlePanel("Top 50 Tweets Mentioning Resilience"),
-
-                            br(),
-                            
-                            p(paste("Explore the the 50 most popular tweets mentioning resilience, as measured by the number of times the tweet 
-                            was favorited.")),
-
-                            # Word resilience tweets.
-
-                            h3("Tweet Search"),
-
-                            # DTable Keyword Input - input$keyword1
-
-                            textInput("keyword1", "Please enter a keyword to search, e.g. strength", "strength"),
-
-                            DTOutput("word_table1")
-
-                        )),
+tabPanel("Explore Tweets",
+         
+         fluidPage(
+             
+             titlePanel("Top 50 Tweets Mentioning Resilience"),
+             
+             br(),
+             
+             p(paste("Explore the the 50 most popular tweets mentioning resilience, as measured by the number of times the tweet 
+             was favorited.")),
+             
+             # Word resilience tweets.
+             
+             h3("Tweet Search"),
+             
+             # DTable Keyword Input - input$keyword1
+             
+             textInput("keyword1", "Please enter a keyword to search, e.g. strength", "strength"),
+             
+             DTOutput("word_table1")
+             
+             )),
 
 ####################################                 
 #### EXPLORE HASHTAG ####
 ####################################
 
-                tabPanel("Explore Hashtags",
-
-                         fluidPage(
-
-                             titlePanel("Explore Top 50 #resilience Tweets"),
-
-                            # Hashtag resilience tweets.
-
-                            br(),
-                            
-                            p(paste("Explore the the 50 most popular tweets using #resilience, as measured by the number of times the tweet 
-                            was favorited.")),
-
-                            h3("Tweet Search"),
-                            
-                            # DTable Keyword Input - input$keyword2
-
-                            textInput("keyword2", "Please enter a keyword to search, e.g. support", "support"),
-
-                            DTOutput("word_table2"),
-
-                            br()
-
-                         )),
+tabPanel("Explore Hashtags",
+         
+         fluidPage(
+             
+             titlePanel("Explore Top 50 #resilience Tweets"),
+             
+             # Hashtag resilience tweets.
+             
+             br(),
+             
+             p(paste("Explore the the 50 most popular tweets using #resilience, as measured by the number of times the tweet 
+             was favorited.")),
+             
+             h3("Tweet Search"),
+             
+             # DTable Keyword Input - input$keyword2
+             
+             textInput("keyword2", "Please enter a keyword to search, e.g. support", "support"),
+             
+             DTOutput("word_table2"),
+             
+             br()
+             
+             )),
                             
 ####################################                 
 #### EXPLORE USERS ####
 ####################################
 
-                tabPanel("Explore Users",
-                         
-                         fluidPage(
-                             
-                             titlePanel("Explore 'Resilience' Users' Tweets"),
-                             
-                             br(),
-                             
-                             p(paste("Explore the tweets of the six users. How do they differ in their content?")),
- 
-                            # User tweets.
-                            
-                            h3("Tweet Search"),
-                            
-                            # DTable Keyword Input - input$keyword3
-                            
-                            textInput("keyword3", "Please enter a keyword to search, e.g. climate", "climate"),
-                            
-                            DTOutput("word_table3"),
-                            
-                            br()
-                            
-                            )),
+tabPanel("Explore Users",
+         
+         fluidPage(
+             
+             titlePanel("Explore 'Resilience' Users' Tweets"),
+             
+             br(),
+             
+             p(paste("Explore the tweets of the six users. How do they differ in their content?")),
+             
+             # User tweets.
+             
+             h3("Tweet Search"),
+             
+             # DTable Keyword Input - input$keyword3
+             
+             textInput("keyword3", "Please enter a keyword to search, e.g. climate", "climate"),
+             
+             DTOutput("word_table3"),
+             
+             br()
+             
+             )),
 
 ####################################                 
 #### ABOUT PAGE ####
@@ -364,49 +364,49 @@ tabPanel("About",
 #### FOOTNOTES ####
 #####################
                  
-                 tabPanel("Footnotes",
-                          
-                          fluidPage(
-                              
-                              # Acknowledgements page at the end.
-                              # Does not require connection to the server.
-                              
-                              titlePanel("Acknowledgments"),
-                              
-                              br(),
-                              
-                              p(paste("I'd like to acknowledge William Smiles, Hemanth Bharatha Chakravarthy, and Tanner Gildea, for
-                              their formidable final projects for Gov 1005. Thank you for writing such clear comments and code,
-                              which I used to help guide my own project.")),
-                              
-                              br(),
-                              
-                              p(paste("The article mentionned on the 'Word Analysis' page can be cited as follows:
-                              Luthar, S S et al. “The construct of resilience: a critical evaluation and guidelines for future work.” 
-                              Child development vol. 71,3 (2000): 543-62. doi:10.1111/1467-8624.00164.")),
-                              
-                              br(),
-                              
-                              p(paste("Check out the link https://towardsdatascience.com/create-a-word-cloud-with-r-bde3e7422e8a,
-                              which in exceedingly helpful when learning how to create word clouds. Also, check out 
-                              https://medium.com/@GalarnykMichael/accessing-data-from-twitter-api-using-r-part1-b387a1c7d3e
-                              for coherent instructions on how to access data from twitter by making an API request.")),
+tabPanel("Footnotes",
+         
+         fluidPage(
+             
+             # Acknowledgements page at the end.
+             # Does not require connection to the server.
+             
+             titlePanel("Acknowledgments"),
+             
+             br(),
+             
+             p(paste("I'd like to acknowledge William Smiles, Hemanth Bharatha Chakravarthy, and Tanner Gildea, for
+             their formidable final projects for Gov 1005. Thank you for writing such clear comments and code,
+             which I used to help guide my own project.")),
+             
+             br(),
+             
+             p(paste("The article mentionned on the 'Word Analysis' page can be cited as follows:
+             Luthar, S S et al. “The construct of resilience: a critical evaluation and guidelines for future work.” 
+             Child development vol. 71,3 (2000): 543-62. doi:10.1111/1467-8624.00164.")),
+             
+             br(),
+             
+             p(paste("Check out the link https://towardsdatascience.com/create-a-word-cloud-with-r-bde3e7422e8a,
+             which in exceedingly helpful when learning how to create word clouds. Also, check out 
+             https://medium.com/@GalarnykMichael/accessing-data-from-twitter-api-using-r-part1-b387a1c7d3e
+             for coherent instructions on how to access data from twitter by making an API request.")),
      
-                              br(),
+             br(),
                               
-                              p(paste("I would like to thank Preceptor, the Gov 1005 TFs and CAs, and my fellow classmates, for all 
-                              of their support in learning R, throughout the semester. In particular, thank you to Claire Fridkin, whose
-                              Study Halls were so great that I would structure my entire weekend around them.")),
+             p(paste("I would like to thank Preceptor, the Gov 1005 TFs and CAs, and my fellow classmates, for all 
+             of their support in learning R, throughout the semester. In particular, thank you to Claire Fridkin, whose
+             Study Halls were so great that I would structure my entire weekend around them.")),
                               
-                              br(),
+             br(),
                               
-                              p(paste("Finally, I would like to thank my brother Jasper, blockmates Kendra and Luke, as well as all of my other friends 
-                              for being there during all of the ups and downs of what has been, without competition, the most time
-                              consuming, tedious, intensive class that I have ever taken - but also one of the most rewarding.")),
+             p(paste("Finally, I would like to thank my brother Jasper, blockmates Kendra and Luke, as well as all of my other friends 
+             for being there during all of the ups and downs of what has been, without competition, the most time
+             consuming, tedious, intensive class that I have ever taken - but also one of the most rewarding.")),
                               
-                              br()
+             br()
                               
-                          )))
+             )))
 
 
 ###################################
