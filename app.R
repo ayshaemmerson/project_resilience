@@ -80,78 +80,35 @@ top_50hr <- read_rds("clean_data/top50hr.rds")
 # Set theme of the app to simplex as I liked its minimalist, aesthetic layout.
 
 ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
+                
                  
-####################################                 
-#### ABOUT PAGE ####
 ####################################
-
-# Page serves to give an overview of the "why", "what", and "how" of the project. 
+#### WORD ANALYSIS ####
+####################################
                  
-                 tabPanel("About",
-                          
-                          fluidPage(
-                              
-                              # Panel title, repeated many times throughout the app.
-                              
-                              titlePanel("Investigating Resilience Using Twitter"),
-                            
-                              # The br() function adds white space to the app, repeated many times.
-                              
-                              br(),
-                              
-                              # The p(paste("text")) function is how I insert text into the app, repeated many times.
-                              
-                              p(paste("Who is most capable of overcoming personal challenges? How do divided countries reconcile themselves, 
-                                      moving forward as one nation? How do people across time and space make sense of pain and tragedy, in order 
-                                      to move forward? To what extent is resilience a narrative we choose, versus an intrinsic or learned quality?")),
-                             
-                              br(),
-                              
-                              p(paste("The word “resilience” is a buzz-word in many popular and academic spheres. It is a concept that can be both 
-                              aspirational and feared, offering a lens for understanding the interlocking of past and present, for addressing crisis, 
-                              and for living a meaningful life. It also offers a framework for understanding why certain patterns across history tend 
-                              to re-emerge.")),
+tabPanel("Word Cloud",
+         
+         fluidPage(
+             
+             titlePanel("Words Associated with Resilience"),
+             
+             p(paste("Resilience, defined by researchers at Columbia’s Department of Human Development,
+                     'refers to a dynamic process encompassing positive adaptation within the context of 
+                     significant adversity.'")),
+                     
+             p(paste("The word cloud below is derived from tweets that use #resilience. By showcasing which words
+                      appear the most often in tweets using #resilience, the plot provides a broader picture of the kinds of themes/categories 
+                      that people associate with resilience. What themes do you observe? Are they what you would expect?")),
                               
                               br(),
                               
-                              p(paste("But it is not just resilient people, systems, and ideas that have endured across history and the globe: 
-                                      it is the idea of resilience itself.")),
-                              
-                              br(),
-                              
-                              p(paste("This project aims to investigate how the concept of resilience enters into public discourse—specifically Twitter.
-                                      Twitter acts as a barometer for popular sentiments and understandings, reflecting and forecasting the changing attitudes 
-                                      and opinions of different groups. By downloading tweets that were posted between November 6th and November 15th 2019, using 
-                                      the Twitter API, this project is an attempt to conduct preliminary research on the concept of resilience, and the different 
-                                      ways in which it is applied. It downloads three kinds of tweets: 1) tweets that mention the word “resilience”; 2) tweets that 
-                                      use #resilience; 3) tweets from six users (all non-profit organizations) with a twitter name that includes the word resilience.")),
-                              
-                              br(),
-                              
-                              p(paste("These six users were selected for their diversity, each aspiring to engender resilience in a different context (social, environmental,
-                                      economic, etc). The Global Resilience Institute (Resilience_NU) at Northeastern, is a univeristy-wide, interdisciplinary 
-                                      effort that collaborates with different experts devise solutions to resilience challenges. The Childhood Resilience Foundation (resiliencefnd) is 
-                                      aims to protect youth and empowering the underserved. The UNDP's Resilience Center (UNDP_GCRED) works in fragile ecosystems to promote inclusive development with
-                                      a focus on environmental resilience. The Resilience Shift (resilienceshift) is dedicated to creating more resilient infastructure. Resilience Code
-                                      tries to make more resilient bodies. The American Resilience Project's (AmResilience) goal is to foster American resilience using the power of stories.
-                                      By comparing the tweets made by these different users, we can compare different visions of resilience more directly, while highlighting how
-                                      this concept transcends across various disciplines.")),
-                              
-                              br(),
-                              
-                              p(paste("Using this data, essentially, the project asks and starts to try and answer, what does the general public mean when the use the term 
-                              “resilience”? What social valences/affect does this word possess? What uses of the word resilience, receive the most appraisal? In the following six tabs, 
-                              you will have the opportunity to explore what I believe to be the most interesting and relevant analysis of this data. Enjoy!")),
-                              
-                              br(),
-                              
-                              p(paste("Created by Aysha Emmerson, November 2019,
-                              Gov 1005 'Data', Harvard College.")),
+                              wordcloud2Output('wordcloud2'),
                               
                               br()
-                          )
-                 ),
+                              
+                          )),
                  
+                                 
 ####################################
 #### GENERAL SUMMARY ####
 ####################################
@@ -169,41 +126,41 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                                   
                                   # The main panel will feature text and three of the visualizations for this tab.
                                   
-                                  mainPanel(
+                               mainPanel(
                                   
-                                  "The graphic below shows the number of tweets mentioning resilience over a 9 day period. 
-                                  Why might the graph spike on November 11th?",
+                                "The graphic below shows the number of tweets mentioning resilience over a 9 day period. 
+                                Why might the graph spike on November 11th?",
                                       
-                                      br(),
+                                br(),
                                       
-                                      # This function pulls the created visualization from the server below, and outputs
-                                      # it in the app.
+                                # This function pulls the created visualization from the server below, and outputs
+                                # it in the app.
                                       
-                                      h3("Frequency of 'resilience' Tweets"),
+                                 h3("Frequency of 'resilience' Tweets"),
                                       
-                                      plotOutput("tweet_freq1"),
+                                 plotOutput("tweet_freq1"),
                                       
-                                      br(),
-                                      br(),
+                                 br(),
+                                 br(),
                                      
-                                      p(paste("The following compares various summary statistics for the different users,
-                                          providing insight into the more general patterns of their twitter usage and
-                                          the kinds of reactions their tweets receieve.")),
+                                 p(paste("The following compares various summary statistics for the different users,
+                                 providing insight into the more general patterns of their twitter usage and
+                                 the kinds of reactions their tweets receieve.")),
                                   
-                                      br(),
+                                 br(),
                                       
-                                      h3("Summary of Users' Tweets"),
-                    
-                                      br(),
+                                 h3("Summary of Users' Tweets"),
+                                
+                                 br(),
                                       
-                                      # The DT package is helps to make interactive tables.
+                                 # The DT package is helps to make interactive tables.
                                       
-                                      DTOutput("summary_table"),
+                                 DTOutput("summary_table"),
                                       
-                                      br(),
-                                      br()
-                                      
-                                  ))),
+                                 br(),
+                                 br()
+                                
+                                ))),
                  
 
 ####################################
@@ -214,7 +171,7 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
          
                         fluidPage(
                               
-                              titlePanel("Sentiment Analysis"),
+                             titlePanel("Sentiment Analysis"),
                               
                               br(),
                               
@@ -248,28 +205,6 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                               plotlyOutput("bing")
                               
                               )),
-
-####################################
-#### WORD ANALYSIS ####
-####################################
-
-tabPanel("Word Cloud",
-         
-         fluidPage(
-             
-             titlePanel("Words Associated with Resilience"),
-             
-             p(paste("The word cloud below is derived from tweets that use #resilience. By showcasing which words
-                              appear the most often in tweets using #resilience, the plot provides a broader picture of the kinds of themes/categories 
-                              that people associate with resilience. What themes do you observe? Are they what you would expect?")),
-             
-             br(),
-             
-             wordcloud2Output('wordcloud2'),
-             
-             br()
-             
-         )),
                  
 ####################################                 
 #### EXPLORE TWEETS ####
@@ -355,6 +290,76 @@ tabPanel("Word Cloud",
                             
                             )),
 
+####################################                 
+#### ABOUT PAGE ####
+####################################
+
+# Page serves to give an overview of the "why", "what", and "how" of the project. 
+
+tabPanel("About",
+         
+         fluidPage(
+             
+             # Panel title, repeated many times throughout the app.
+             
+             titlePanel("Investigating Resilience Using Twitter"),
+             
+             # The br() function adds white space to the app, repeated many times.
+             
+             br(),
+             
+             # The p(paste("text")) function is how I insert text into the app, repeated many times.
+             
+             p(paste("Who is most capable of overcoming personal challenges? How do divided countries reconcile themselves, 
+             moving forward as one nation? How do people across time and space make sense of pain and tragedy, in order 
+             to move forward? To what extent is resilience a narrative we choose, versus an intrinsic or learned quality?")),
+             
+             br(),
+             
+             p(paste("The word “resilience” is a buzz-word in many popular and academic spheres. It is a concept that can be both 
+             aspirational and feared, offering a lens for understanding the interlocking of past and present, for addressing crisis, 
+             and for living a meaningful life. It also offers a framework for understanding why certain patterns across history tend 
+             to re-emerge.")),
+             
+             br(),
+             
+             p(paste("But it is not just resilient people, systems, and ideas that have endured across history and the globe: 
+             it is the idea of resilience itself.")),
+             
+             br(),
+             
+             p(paste("This project aims to investigate how the concept of resilience enters into public discourse—specifically Twitter.
+             Twitter acts as a barometer for popular sentiments and understandings, reflecting and forecasting the changing attitudes 
+             and opinions of different groups. By downloading tweets that were posted between November 6th and November 15th 2019, using 
+             the Twitter API, this project is an attempt to conduct preliminary research on the concept of resilience, and the different 
+             ways in which it is applied. It downloads three kinds of tweets: 1) tweets that mention the word “resilience”; 2) tweets that 
+             use #resilience; 3) tweets from six users (all non-profit organizations) with a twitter name that includes the word resilience.")),
+             
+             br(),
+             
+             p(paste("These six users were selected for their diversity, each aspiring to engender resilience in a different context (social, environmental,
+             economic, etc). The Global Resilience Institute (Resilience_NU) at Northeastern, is a univeristy-wide, interdisciplinary 
+             effort that collaborates with different experts devise solutions to resilience challenges. The Childhood Resilience Foundation (resiliencefnd) is 
+             aims to protect youth and empowering the underserved. The UNDP's Resilience Center (UNDP_GCRED) works in fragile ecosystems to promote inclusive development with
+             a focus on environmental resilience. The Resilience Shift (resilienceshift) is dedicated to creating more resilient infastructure. Resilience Code
+             tries to make more resilient bodies. The American Resilience Project's (AmResilience) goal is to foster American resilience using the power of stories.
+             By comparing the tweets made by these different users, we can compare different visions of resilience more directly, while highlighting how
+             this concept transcends across various disciplines.")),
+             
+             br(),
+             
+             p(paste("Using this data, essentially, the project asks and starts to try and answer, what does the general public mean when the use the term 
+             “resilience”? What social valences/affect does this word possess? What uses of the word resilience, receive the most appraisal? In the following six tabs, 
+             you will have the opportunity to explore what I believe to be the most interesting and relevant analyses of this data. Enjoy!")),
+             
+             br(),
+             
+             p(paste("Created by Aysha Emmerson, November 2019, Gov 1005 'Data', Harvard College. GitHub repo: https://github.com/ayshaemmerson/project_resilience")),
+             
+             br()
+         )
+),
+
 ####################
 #### FOOTNOTES ####
 #####################
@@ -371,27 +376,33 @@ tabPanel("Word Cloud",
                               br(),
                               
                               p(paste("I'd like to acknowledge William Smiles, Hemanth Bharatha Chakravarthy, and Tanner Gildea, for
-                                      their formidable final projects for Gov 1005. Thank you for writing such clear comments and code,
-                                      which I used to help guide my own project.")),
+                              their formidable final projects for Gov 1005. Thank you for writing such clear comments and code,
+                              which I used to help guide my own project.")),
+                              
+                              br(),
+                              
+                              p(paste("The article mentionned on the 'Word Analysis' page can be cited as follows:
+                              Luthar, S S et al. “The construct of resilience: a critical evaluation and guidelines for future work.” 
+                              Child development vol. 71,3 (2000): 543-62. doi:10.1111/1467-8624.00164.")),
                               
                               br(),
                               
                               p(paste("Check out the link https://towardsdatascience.com/create-a-word-cloud-with-r-bde3e7422e8a,
-                                      which in exceedingly helpful when learning how to create word clouds. Also, check out 
-                                      https://medium.com/@GalarnykMichael/accessing-data-from-twitter-api-using-r-part1-b387a1c7d3e
-                                      for coherent instructions on how to access data from twitter by making an API request.")),
+                              which in exceedingly helpful when learning how to create word clouds. Also, check out 
+                              https://medium.com/@GalarnykMichael/accessing-data-from-twitter-api-using-r-part1-b387a1c7d3e
+                              for coherent instructions on how to access data from twitter by making an API request.")),
      
                               br(),
                               
                               p(paste("I would like to thank Preceptor, the Gov 1005 TFs and CAs, and my fellow classmates, for all 
-                                      of their support in learning R, throughout the semester. In particular, thank you to Claire Fridkin, whose
-                                      Study Halls were so great that I would structure my entire weekend around them.")),
+                              of their support in learning R, throughout the semester. In particular, thank you to Claire Fridkin, whose
+                              Study Halls were so great that I would structure my entire weekend around them.")),
                               
                               br(),
                               
                               p(paste("Finally, I would like to thank my brother Jasper, blockmates Kendra and Luke, as well as all of my other friends 
-                                      for being there during all of the ups and downs of what has been, without competition, the most time
-                                      consuming, tedious, intensive class that I have ever taken - but also one of the most rewarding.")),
+                              for being there during all of the ups and downs of what has been, without competition, the most time
+                              consuming, tedious, intensive class that I have ever taken - but also one of the most rewarding.")),
                               
                               br()
                               
@@ -406,6 +417,16 @@ tabPanel("Word Cloud",
 # "under the hood" of the app itself.
 
 server <- function(input, output) {
+
+####################################
+#### WORD ANALYSIS ####
+####################################
+    
+# Output for word cloud.
+    
+    output$wordcloud2 <- renderWordcloud2({
+        wordcloud2(data=cloud, size=0.9, color='random-dark')
+    })
     
 ####################################
 #### GENERAL SUMMARY ####
@@ -466,17 +487,6 @@ server <- function(input, output) {
             theme(axis.title.x=element_blank(),
                   axis.text.x = element_text(angle = 60, hjust = 1))
     })
-    
-####################################
-#### WORD ANALYSIS ####
-####################################
-    
-# Output for word cloud.
-    
-output$wordcloud2 <- renderWordcloud2({
-        wordcloud2(data=cloud, size=0.9, color='random-dark')
-    })
-    
     
 ####################################                 
 #### EXPLORE TWEETS ####

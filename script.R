@@ -239,6 +239,73 @@ user_tweets <- bind_rows(
 user_tweets <- write_rds(user_tweets, "clean_data/user_tweets.rds")
 
 ####################################                 
+##### WORD ANALYSIS ####
+####################################
+
+#### WORD CLOUDS ####
+
+# Create wordcloud for tweets mentioning resilience. Word clouds are an effective way to visualize data as they
+# present information about the frequency of words in a clear, visually appealing format. The size of the word
+# in the cloud, depends on how often it is employed. I will create a wordcloud for the cleaned data for
+# hashtag_resilience, showing the most common word used in these tweets.
+
+# First, the data needs to be cleaned and text extracted as a vector.
+# Cleaning involves removing common stop words in order to produce
+# meaningful results. Removed the word "amp" and other gibberish words
+# that kept reappearing as well as all urls. Also removed the word resilience because it was too 
+# large (as it was mentioned so frequently in the tweets) that you could not see other words.
+
+# The following code requires the following packages:
+# library(wordcloud)
+# library(SnowballC)
+# library(tm)
+# Corpus is way of storing a collection of documents in format that is readable by R software.
+# The “tm” package operates on this corpus format.
+
+text <- hr_cleaned$text
+docs <- Corpus(VectorSource(text))
+
+# Following code finds key words and removes banal ones. Text is cleaned by converting all text 
+# to lowercase and removing punctuation, links, and unnecessary symbols or whitespace. "Stop words" are 
+# common, filler words that do not provide us with any useful information.
+
+docs <- docs %>%
+  tm_map(removeNumbers) %>%
+  tm_map(removePunctuation) %>%
+  tm_map(stripWhitespace) 
+docs <- tm_map(docs, content_transformer(tolower))
+docs <- tm_map(docs, removeWords, stopwords("english"))
+docs <- tm_map(docs, removeWords, c("amp", "resilience", "'s", "'re", "smedian"))
+removeURL <- function(x) gsub("http[[:alnum:]]*", "", x)
+docs <- tm_map(docs, content_transformer(removeURL))
+
+# Create a "document-term" matrix using the tm package.
+# This creates a dataframe containing each word in the first 
+# column and its frequency in the second.
+
+dtm <- TermDocumentMatrix(docs) 
+matrix <- as.matrix(dtm) 
+words <- sort(rowSums(matrix),decreasing=TRUE) 
+df <- data.frame(word = names(words),freq=words) 
+
+# Stored data in word_analysis folder.
+# To use for making the word cloud.
+
+write_rds(df, "word_analysis/df.rds")
+
+# Using the wordcloud package, generated the word cloud.
+# Played around with different ways to visualize and decided upon 
+# the one that is tested out below. Will construct identical cloud in shiny app.
+
+wr_word_cloud <- wordcloud2(data=df, size=5, color='random-dark')
+
+# Alternatively, I could have used the following code to create the plot; I
+# just found the previous one more visually appealing:
+# wordcloud(words = df$word, freq = df$freq, min.freq = 1,
+# max.words=200, random.order=FALSE, rot.per=0.35,            
+# colors=brewer.pal(8, "Dark2"))
+
+####################################                 
 #### GENERAL SUMMARY ####
 ####################################
 
@@ -339,73 +406,6 @@ wr_sentiment_nrc <- wr_cleaned %>%
 # Stored sentiment analysis data in sentiment_analysis folder.
 
 write_rds(wr_sentiment_nrc, "word_analysis/wr_sentiment_nrc.rds")
-
-####################################                 
-##### WORD ANALYSIS ####
-####################################
-
-#### WORD CLOUDS ####
-
-# Create wordcloud for tweets mentioning resilience. Word clouds are an effective way to visualize data as they
-# present information about the frequency of words in a clear, visually appealing format. The size of the word
-# in the cloud, depends on how often it is employed. I will create a wordcloud for the cleaned data for
-# hashtag_resilience, showing the most common word used in these tweets.
-
-# First, the data needs to be cleaned and text extracted as a vector.
-# Cleaning involves removing common stop words in order to produce
-# meaningful results. Removed the word "amp" and other gibberish words
-# that kept reappearing as well as all urls. Also removed the word resilience because it was too 
-# large (as it was mentioned so frequently in the tweets) that you could not see other words.
-
-# The following code requires the following packages:
-# library(wordcloud)
-# library(SnowballC)
-# library(tm)
-# Corpus is way of storing a collection of documents in format that is readable by R software.
-# The “tm” package operates on this corpus format.
-
-text <- hr_cleaned$text
-docs <- Corpus(VectorSource(text))
-
-# Following code finds key words and removes banal ones. Text is cleaned by converting all text 
-# to lowercase and removing punctuation, links, and unnecessary symbols or whitespace. "Stop words" are 
-# common, filler words that do not provide us with any useful information.
-
-docs <- docs %>%
-  tm_map(removeNumbers) %>%
-  tm_map(removePunctuation) %>%
-  tm_map(stripWhitespace) 
-docs <- tm_map(docs, content_transformer(tolower))
-docs <- tm_map(docs, removeWords, stopwords("english"))
-docs <- tm_map(docs, removeWords, c("amp", "resilience", "'s", "'re", "smedian"))
-removeURL <- function(x) gsub("http[[:alnum:]]*", "", x)
-docs <- tm_map(docs, content_transformer(removeURL))
-
-# Create a "document-term" matrix using the tm package.
-# This creates a dataframe containing each word in the first 
-# column and its frequency in the second.
-
-dtm <- TermDocumentMatrix(docs) 
-matrix <- as.matrix(dtm) 
-words <- sort(rowSums(matrix),decreasing=TRUE) 
-df <- data.frame(word = names(words),freq=words) 
-
-# Stored data in word_analysis folder.
-# To use for making the word cloud.
-
-write_rds(df, "word_analysis/df.rds")
-
-# Using the wordcloud package, generated the word cloud.
-# Played around with different ways to visualize and decided upon 
-# the one that is tested out below. Will construct identical cloud in shiny app.
-
-wr_word_cloud <- wordcloud2(data=df, size=5, color='random-dark')
-
-# Alternatively, I could have used the following code to create the plot; I
-# just found the previous one more visually appealing:
-# wordcloud(words = df$word, freq = df$freq, min.freq = 1,
-# max.words=200, random.order=FALSE, rot.per=0.35,            
-# colors=brewer.pal(8, "Dark2"))
 
 ####################################                 
 #### EXPLORE TWEETS ####
