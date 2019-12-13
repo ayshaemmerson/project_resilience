@@ -7,6 +7,7 @@ This project, titled "Project Resilience," downloads tweets pertaining to “res
 # Repo Guide:
 
 **/clean_data**: Folder compiling multiple transformed/cleaned datasets 
+
 **/general_summary**: Folder compiling multiple transformed/cleaned datasets 
 
 **/shiny_files**: Folder with my Shiny App files
@@ -18,6 +19,7 @@ Within **/shiny_files**:
    4. **script.R**: Shiny script code
 
 **/word_analysis**: Folder compiling multiple transformed/cleaned datasets
+
 **DS_Store**: File that stores custom attributes 
 
 **.gitignore**: File that specifies which files I want Git to ignore
