@@ -20,5 +20,4 @@ Within **/shiny_files**:
 
 **/word_analysis**: Folder compiling multiple transformed/cleaned datasets
 
-**DS_Store**: File that stores custom attributes 
 
