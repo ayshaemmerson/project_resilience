@@ -35,6 +35,11 @@ library(devtools)
 library(DT)
 library(lubridate)
 
+# To embed the video.
+
+library(vembedr)
+library(htmltools)
+
 # The stop words data is necessary later for sentiment analysis.
 
 data("stop_words")
@@ -83,7 +88,7 @@ ui <- navbarPage("Project Resilience", theme = shinytheme("simplex"),
                 
                  
 ####################################
-#### WORD ANALYSIS ####
+#### WORD CLOUD ####
 ####################################
                  
 tabPanel("Word Cloud",
@@ -176,9 +181,9 @@ tabPanel("Sentiment Analysis",
              br(),
              
              p(paste("Using a method called Sentiment Analysis, we can discern what sentiments are 
-                              commonly associated with resilience. This is done by checking each tweet
-                              for specific 'baskets of words,' which are known as lexicons. I chose to use the 'nrc' and
-                              'bing' lexicons.")),
+             commonly associated with resilience. This is done by checking each tweet
+             for specific 'baskets of words,' which are known as lexicons. I chose to use the 'nrc' and
+             'bing' lexicons.")),
                         
              br(),
                               
@@ -354,7 +359,14 @@ tabPanel("About",
              
              br(),
              
-             p(paste("Created by Aysha Emmerson, November 2019, Gov 1005 'Data', Harvard College. GitHub repo: https://github.com/ayshaemmerson/project_resilience")),
+             embed_youtube("1wMh2BZmKqA", width = 420, height = 315, frameborder = 0,
+                           allowfullscreen = TRUE, query = NULL),
+             
+             br(),
+             br(),
+             
+             p(paste("Created by Aysha Emmerson, November 2019, Gov 1005 'Data', Harvard College.")),
+             p(a(href="https://github.com/ayshaemmerson/project_resilience", "Click here to view my GitHub repo!")),
              
              br()
          )
