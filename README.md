@@ -22,4 +22,3 @@ Within **/shiny_files**:
 
 **DS_Store**: File that stores custom attributes 
 
-**.gitignore**: File that specifies which files I want Git to ignore
