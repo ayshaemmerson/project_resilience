@@ -297,6 +297,8 @@ write_rds(df, "word_analysis/df.rds")
 
 wr_word_cloud <- wordcloud2(data=df, size=5, color='random-dark')
 
+write_rds(wr_word_cloud, "word_analysis/wr_word_cloud.rds")
+
 # Alternatively, I could have used the following code to create the plot; I
 # just found the previous one more visually appealing:
 # wordcloud(words = df$word, freq = df$freq, min.freq = 1,
