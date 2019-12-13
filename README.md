@@ -1,4 +1,4 @@
-# final_project_draft_2
+# Project Resilience
 
 This project, titled "Project Resilience," downloads tweets pertaining to “resilience,” performing a series of analysis—including a sentiment analysis and word cloud plot—to investigate what feelings, concepts, and words, the general public associates with this concept. The findings are displayed in the following interactive shiny app. Enjoy!
 
