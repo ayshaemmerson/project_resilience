@@ -1,0 +1,12 @@
+name: project_resilience
+title: project_resilience
+username:
+account: ayshaemmerson
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1595107
+bundleId: 2663802
+url: https://ayshaemmerson.shinyapps.io/project_resilience/
+when: 1576200546.27528
+asMultiple: FALSE
+asStatic: FALSE
